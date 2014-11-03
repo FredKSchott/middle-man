@@ -11,12 +11,13 @@ npm install --save middleman
 ## Usage
 
 ``` javascript
-    // Require middleman
-    var middleman = require('middleman');
-    // Generate express middleware from your directory of middleware objects
-		var middlewareArray = middleman.generate({directory: path.resolve(__dirname, '/middleware')});
-		// Pass in your new, ordered middleware array into Express
-		app.use(middlewareArray);
+// Require middleman
+var middleman = require('middleman');
+
+// Generate express middleware from your directory of middleware objects
+var middlewareArray = middleman.generate({directory: path.resolve(__dirname, '/middleware')});
+// Pass in your new, ordered middleware array into Express
+app.use(middlewareArray);
 ```
 
 ## Middleware Plugins
@@ -41,10 +42,10 @@ module.exports = {
 
 ``` javascript
 module.exports = {
-	name: 'simple-plugin',
-	middleware: function simplePlugin(req, res, next) {
-		next();
-	}
+  name: 'simple-plugin',
+  middleware: function simplePlugin(req, res, next) {
+    next();
+  }
 };
 ```
 
