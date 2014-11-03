@@ -28,7 +28,7 @@ app.use(middlewareArray);
 module.exports = {
   name: // The name of the middleware plugin, used to reference as a dependency, etc.
   middleware: // A function or array of functions to register with your express application
-  dependencies: // An array of muddleware plugin names that must be run before this one
+  dependencies: // [Optional] An array of muddleware plugin names that must be run before this one
   priority: // [Optional] if true, order this middleware before any non-priority plugins
 };
 ```
