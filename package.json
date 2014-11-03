@@ -4,8 +4,13 @@
   "description": "Middleware Manager",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha tests/ --recursive",
+    "lint": "./node_modules/eslint/bin/eslint.js index.js"
   },
   "author": "",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "mocha": "~2.0.1",
+    "eslint": "~0.9.2"
+  }
 }
