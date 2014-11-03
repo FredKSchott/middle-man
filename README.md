@@ -1,4 +1,4 @@
-middleman
+middle-man
 =========
 
 Simple express middleware manager. Pull your middleware out `server.js` and into seperate modules. Instead of worrying about middleware execution order, focus on what dependencies exist between them, if any.
