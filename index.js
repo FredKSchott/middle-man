@@ -1,6 +1,6 @@
-var fs = require('fs');
+'use strict';
 
-var middleware;
+var fs = require('fs');
 
 function proccessMiddleware(plugins) {
 	var orderedMiddleware = [],
@@ -39,10 +39,12 @@ function proccessMiddleware(plugins) {
 		});
 	}
 
+	// Step 1: Populate the availableDependencies base object
 	plugins.forEach(function createPluginDictionary(plugin) {
 		availableDependencies[plugin.name] = false;
 	});
 
+	// Step 2: Add the special 'setup' plugin, if present
 	plugins.forEach(function addSetup(plugin) {
 		if(plugin.name === 'setup') {
 			if(typeof plugin.dependencies !== 'undefined') {
@@ -52,36 +54,33 @@ function proccessMiddleware(plugins) {
 		}
 	});
 
+	// Step 3: Add each priority plugin
 	plugins.forEach(function addPriority(plugin) {
-		if(!plugin.added && plugin.priority) {
+		if(plugin.priority && !plugin.added) {
 			addPlugin(plugin);
 		}
 	});
 
+	// Step 4: Add all other plugins
+	function addNormal(plugin) {
+		if(hasFulfilledDependencies(plugin) && !plugin.added) {
+			addPlugin(plugin);
+		}
+	}
 	while(numPlugins < totalPlugins) {
-		plugins.forEach(function addNormal(plugin) {
-			if(!plugin.added && hasFulfilledDependencies(plugin)) {
-				addPlugin(plugin);
-			}
-		});
+		plugins.forEach(addNormal);
 	}
 
 	return orderedMiddleware;
 }
 
 module.exports = {
-	init: function init(params) {
-		var middlewareDirectory = './examples';
+	generate: function init(params) {
+		var middlewareDirectory = params.directory;
 		var middlewareFiles = fs.readdirSync(middlewareDirectory);
 		var middlewareModules = middlewareFiles.map(function(filename) {
 			return require(middlewareDirectory + '/' + filename);
 		});
-		console.log(middlewareModules);
-		var orderedMiddleware = proccessMiddleware(middlewareModules);
-		console.log(orderedMiddleware);
-		return;
-		// proccessMiddleware(directory);
+		return proccessMiddleware(middlewareModules);
 	}
 };
-
-module.exports.init();
